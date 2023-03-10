@@ -9,6 +9,7 @@ import { Pagination } from "@mui/material";
 function App() {
   const [news, setNews] = useState([]);
   const [myResults, setResults] = useState();
+  const [numPages, setNumPages] = useState();
   const [search, setSearch] = useState("");
   const [activePage, setActivePage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +45,9 @@ function App() {
       .then((response) => {
         setNews(response.data.hits);
         setResults(response.data.nbHits);
+        setNumPages(
+          Math.ceil(response.data.nbHits / response.data.hitsPerPage)
+        );
         console.log(response);
         setIsLoading(false);
       })
@@ -57,7 +61,6 @@ function App() {
       .get(url)
       .then((response) => {
         setNews(response.data.hits);
-        console.log(response);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -104,7 +107,11 @@ function App() {
         className="d-flex justify-content-center"
         style={{ marginBottom: "0.5rem", marginTop: "1rem" }}
       >
-        <Pagination count={10} page={activePage} onChange={handleChange} />
+        <Pagination
+          count={numPages}
+          page={activePage}
+          onChange={handleChange}
+        />
       </div>
       <Footer />
 
