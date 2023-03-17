@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import News from "./News";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -40,32 +39,38 @@ function App() {
   };
 
   useEffect(() => {
-    axios
-      .get(url)
-      .then((response) => {
-        setNews(response.data.hits);
-        setResults(response.data.nbHits);
-        setNumPages(
-          Math.ceil(response.data.nbHits / response.data.hitsPerPage)
-        );
-        console.log(response);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(`${error} COMPUTER SAYS N0 CONNECTION POSSIBLE...`);
-      });
+    try {
+      fetch(url)
+        .then((answer) => {
+          return answer.json();
+        })
+        .then((response) => {
+          console.log(response);
+          setNews(response.hits);
+          setResults(response.nbHits);
+          setNumPages(Math.floor(response.nbHits / response.hitsPerPage));
+          console.log(response);
+          setIsLoading(false);
+        });
+    } catch (error) {
+      console.log(`${error} COMPUTER SAYS N0 CONNECTION POSSIBLE...`);
+    }
   }, [search]);
+  console.log(news);
 
   useEffect(() => {
-    axios
-      .get(url)
-      .then((response) => {
-        setNews(response.data.hits);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(`${error} COMPUTER SAYS N0 CONNECTION POSSIBLE...`);
-      });
+    try {
+      fetch(url)
+        .then((answer) => {
+          return answer.json();
+        })
+        .then((response) => {
+          setNews(response.hits);
+          setIsLoading(false);
+        });
+    } catch (error) {
+      console.log(`${error} COMPUTER SAYS N0 CONNECTION POSSIBLE...`);
+    }
   }, [activePage]);
 
   return (
@@ -80,11 +85,12 @@ function App() {
       }}
     >
       <Navbar />
-      {news.length < 1 ? (
+      {news?.length < 1 ? (
         <div>
           <p style={{ marginLeft: "0", padding: "0", fontSize: "0.75em" }}>
             No results for your query...sorry dear, try a different search term
           </p>
+          {numPages}
         </div>
       ) : (
         <p style={{ marginLeft: "0", padding: "0", fontSize: "0.75em" }}>
@@ -98,7 +104,7 @@ function App() {
         </div>
       ) : (
         <div>
-          {news.map((item) => (
+          {news?.map((item) => (
             <News item={item} news={news} key={item.objectID} />
           ))}
         </div>
