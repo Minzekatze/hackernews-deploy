@@ -1,7 +1,6 @@
 {
   "name": "hackernews-api",
   "version": "0.1.0",
-  "homepage": "https://Minzekatze.github.io/hackernews-deploy",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
