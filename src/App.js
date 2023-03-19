@@ -8,7 +8,7 @@ import { Pagination } from "@mui/material";
 function App() {
   const [news, setNews] = useState([]);
   const [myResults, setResults] = useState();
-  const [numPages, setNumPages] = useState();
+  // const [numPages, setNumPages] = useState();
   const [search, setSearch] = useState("");
   const [activePage, setActivePage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +48,8 @@ function App() {
           console.log(response);
           setNews(response.hits);
           setResults(response.nbHits);
-          setNumPages(Math.floor(response.nbHits / response.hitsPerPage));
+          // setNumPages(Math.ceil(response.nbHits / response.hitsPerPage));
+          setActivePage(1);
           console.log(response);
           setIsLoading(false);
         });
@@ -90,7 +91,6 @@ function App() {
           <p style={{ marginLeft: "0", padding: "0", fontSize: "0.75em" }}>
             No results for your query...sorry dear, try a different search term
           </p>
-          {numPages}
         </div>
       ) : (
         <p style={{ marginLeft: "0", padding: "0", fontSize: "0.75em" }}>
@@ -113,11 +113,7 @@ function App() {
         className="d-flex justify-content-center"
         style={{ marginBottom: "0.5rem", marginTop: "1rem" }}
       >
-        <Pagination
-          count={numPages}
-          page={activePage}
-          onChange={handleChange}
-        />
+        <Pagination count={10} page={activePage} onChange={handleChange} />
       </div>
       <Footer />
 
