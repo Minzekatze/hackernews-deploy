@@ -12,7 +12,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [activePage, setActivePage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const url = `http://hn.algolia.com/api/v1/search?page=${
+  const url = `https://hn.algolia.com/api/v1/search?page=${
     activePage - 1
   }&query=${search}&tags=story`;
   const inputRef = useRef();
